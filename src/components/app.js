@@ -5,7 +5,7 @@ import ToDoList from './ToDoList';
 const todos = [
     {
       task: "eat dinner",
-      isCompleted: false
+      isCompleted: true
     },
     {
       task: "finish watching react tutorials",
@@ -22,15 +22,24 @@ export default class App extends React.Component {
     }
   }
 
-  createTask( task ) {
-    const updateTodoState = this.state.todos
+  toggleTask( task ) {
+    const foundToDo = _.find(this.state.todos, todo => todo.task === task)
+    foundToDo.isCompleted = !foundToDo.isCompleted;
+    this.setState( { todos: this.state.todos } );
+  }
 
-    updateTodoState.push({
+  createTask( task ) {
+    this.state.todos.push ({
       task,
       isCompleted: false
     })
 
-    this.setState({ todos: updateTodoState })
+    this.setState({ todos: this.state.todos })
+  }
+  saveTask( oldTask, newTask ){
+    const foundToDo = _.find(this.state.todos, todo => todo.task === oldTask);
+    foundToDo.task =newTask;
+    this.setState({ todos: this.state.todos })
   }
 
   render() {
@@ -38,7 +47,10 @@ export default class App extends React.Component {
       <div>
         <h1>React ToDo App</h1>
           <CreateToDo createTask={ this.createTask.bind( this ) } />
-          <ToDoList todos={ this.state.todos } />
+          <ToDoList todos={ this.state.todos }
+                    toggleTask={ this.toggleTask.bind( this ) }
+                    saveTask={this.saveTask.bind(this )}
+          />
       </div>
     );
   }

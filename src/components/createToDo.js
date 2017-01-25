@@ -7,12 +7,13 @@ export default class ToDoList extends React.Component {
     return (
       <form onSubmit={ this.handleCreate.bind( this ) }>
         <input type="text" placeholder="What needs to get done?" ref="createInput"/>
-        <button onClick={() => this.props.createTask(this.props.refs)}>Create</button>
+        <button>Create</button>
       </form>
     )
   }
   handleCreate( event ) {
     event.preventDefault()
     this.props.createTask(this.refs.createInput.value);
+    this.refs.createInput.value = "";
   }
 }
